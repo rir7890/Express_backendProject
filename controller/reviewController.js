@@ -49,16 +49,31 @@ module.exports.top3reviews = async function top3reviews(req, res) {
 
 module.exports.getPlanReviews = async function getPlanReviews(req, res) {
   try {
-    const id = req.params.id;
-    const review = await reviewModel.find(id);
-    if (review) {
+    // const id = req.params.id;
+    // const review = await planModel.findById(id);
+    // if (review) {
+    //   return res.json({
+    //     message: "review retrieved",
+    //     data: review,
+    //   });
+    // } else {
+    //   return res.json({
+    //     message: "review not found 3",
+    //   });
+    // }
+    //plan click  --> corresponding all review we must get
+
+    let planid = req.params.id;
+    let reviews = await reviewModel.find();
+    reviews = reviews.filter((review) => review.plan._id == planid);
+    if (reviews) {
       return res.json({
-        message: "review retrieved",
-        data: review,
+        message: "reviews of the plan has been retrived",
+        data: reviews,
       });
     } else {
       return res.json({
-        message: "review not found 3",
+        message: "reviews are empty for the given plan",
       });
     }
   } catch (err) {
