@@ -36,14 +36,14 @@ app.listen(3000, () => {
 
 const userRouter = require("./Routers/userRouter.js");
 const planRouter = require("./Routers/planRouter.js");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const reviewRouter = require("./Routers/reviewRouter.js");
 // const authRouter = express.Router();
 // const authRouter = require("./Routers/authRouter.js");
 
 app.use("/user", userRouter);
 app.use("/plans", planRouter);
-app.use("/reviews", reviewRouter);
+app.use("/review", reviewRouter);
 
 // app.use("/auth", authRouter);
 

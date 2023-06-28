@@ -1,6 +1,14 @@
 const express = require("express");
 const reviewRouter = express.Router();
 const { protectRoute } = require("../controller/authController");
+const {
+  getAllReviews,
+  top3reviews,
+  getPlanReviews,
+  createReview,
+  updateReview,
+  deleteReview,
+} = require("../controller/reviewController");
 
 reviewRouter.route("/all").get(getAllReviews);
 

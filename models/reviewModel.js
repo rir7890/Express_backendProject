@@ -5,7 +5,7 @@ mongoose
   .connect(db_link)
   .then(function (db) {
     // console.log(db);////all the information about the mongodb in object form on the console
-    console.log("database is connected");
+    console.log("reviews db is connected");
   })
   .catch(function (err) {
     console.log(err);

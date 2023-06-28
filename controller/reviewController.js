@@ -1,6 +1,6 @@
 const reviewModel = require("../models/reviewModel");
 const planModel = require("../models/planModel");
-const { updatePlan } = require("../controller/planController");
+// const { updatePlan } = require("../controller/planController");
 
 module.exports.getAllReviews = async function getAllReviews(req, res) {
   try {
@@ -82,6 +82,54 @@ module.exports.createReview = async function createReview(req, res) {
   } catch (err) {
     return res.status(500).json({
       message: err.message + " ( createReview function error ) ",
+    });
+  }
+};
+
+module.exports.updateReview = async function updateReview(req, res) {
+  try {
+    let id = req.params.id;
+    let dataToBeUpdated = req.body;
+    // console.log(id);
+    // console.log(dataToBeUpdated);
+    let keys = [];
+    for (let key in dataToBeUpdated) {
+      keys.push(key);
+    }
+    let review = await reviewModel.findById(id);
+    if (review) {
+      for (let i = 0; i < keys.length; i++) {
+        review[keys[i]] = dataToBeUpdated[keys[i]];
+      }
+      await review.save();
+      return res.json({
+        message: "review is updated succesfully",
+        data: review,
+      });
+    } else {
+      return res.json({
+        message: "review id is not found for updation",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      message:
+        err.message + " ( updateReview function is not working properly ) ",
+    });
+  }
+};
+
+module.exports.deleteReview = async function deleteReview(req, res) {
+  try {
+    let id = req.params.id;
+    let review = await planModel.findByIdAndDelete(id);
+    return res.json({
+      message: "review deleted",
+      data: review,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message + " ( deleteReview function error ) ",
     });
   }
 };
