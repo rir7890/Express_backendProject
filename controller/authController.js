@@ -2,12 +2,14 @@ const express = require("express");
 const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const JWT_KEY = require("../secrets");
+const { sendMail } = require("../utility/nodemailer");
 
 //SIGN UP user
 module.exports.signup = async function signup(req, res) {
   try {
     let dataObj = req.body;
     let user = await userModel.create(dataObj);
+    sendMail("signup", user);
     if (user) {
       res.json({
         message: "user signed up",
@@ -133,6 +135,14 @@ module.exports.forgetpassword = async function forgetpassword(req, res) {
       )}/resetpassword/${resetToken}`;
       //send email to the user
       //nodemailer
+      let obj = {
+        resetPasswordLink: resetPasswordLink,
+        email: email,
+      };
+      sendMail("resetpassword", obj);
+      return res.json({
+        message: "it is ready to reset the password by the help of nodemailer",
+      });
     } else {
       return res.json({
         message: "user is null in forget password // please sign up",

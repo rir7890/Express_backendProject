@@ -129,3 +129,12 @@ module.exports.getAllUser = async function getAllUser(req, res) {
 //   console.log(cookies);
 //   res.send("cookies received");
 // }
+
+module.exports.updateProfileImage = async function updateProfileImage(
+  req,
+  res
+) {
+  res.json({
+    message: "file uploaded successfully",
+  });
+};

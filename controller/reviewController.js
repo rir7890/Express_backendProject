@@ -103,12 +103,17 @@ module.exports.createReview = async function createReview(req, res) {
 
 module.exports.updateReview = async function updateReview(req, res) {
   try {
-    let id = req.params.id;
+    let planid = req.params.id;
+    //review id from frontend
+    let id = req.body.id;
     let dataToBeUpdated = req.body;
     // console.log(id);
     // console.log(dataToBeUpdated);
     let keys = [];
     for (let key in dataToBeUpdated) {
+      if (key == "id") {
+        continue;
+      }
       keys.push(key);
     }
     let review = await reviewModel.findById(id);
@@ -136,8 +141,9 @@ module.exports.updateReview = async function updateReview(req, res) {
 
 module.exports.deleteReview = async function deleteReview(req, res) {
   try {
-    let id = req.params.id;
-    let review = await planModel.findByIdAndDelete(id);
+    let planid = req.params.id;
+    let id = req.body.id;
+    let review = await reviewModel.findByIdAndDelete(id);
     return res.json({
       message: "review deleted",
       data: review,

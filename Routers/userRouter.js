@@ -1,13 +1,15 @@
 const express = require("express");
-const app = express();
+const multer = require("multer");
+// const app = express();
 const userRouter = express.Router();
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 // const protectRoute = require("./authHelper.js");
 const {
   getUser,
   updateUser,
   deleteUser,
   getAllUser,
+  updateProfileImage,
 } = require("../controller/userController.js");
 
 const {
@@ -47,6 +49,36 @@ userRouter.route("/resetpassword/:token").post(resetpassword);
 
 ////logout the user
 userRouter.route("/logout").get(logout);
+
+//multer for fileload
+// upload -> storage , filter
+const multerStorage = multer.diskStorage({
+  destination: function (req, res, cb) {
+    cb(null, "public/images");
+  },
+  filename: function (req, file, cb) {
+    cb(null, `user-${Date.now()}.jpeg`);
+  },
+});
+
+const filter = function (req, file, cb) {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new Error("not an Image! please upload an image"));
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: filter,
+});
+
+userRouter.post("/profileImage", upload.single("photo"), updateProfileImage);
+//get request
+userRouter.get("/profileImage", (req, res) => {
+  res.sendFile("F:/webdevelopment/MongoDb/multer.html");
+});
 
 ////profile page
 userRouter.use(protectRoute);
